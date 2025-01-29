@@ -25,6 +25,9 @@ interface signUpPayload {
   password: string;
 }
 
+interface postMessagePayload {
+  message: string;
+}
 interface AppContextValue {
   user: User | null;
   isLoading: boolean;
@@ -34,6 +37,7 @@ interface AppContextValue {
   logOut: () => Promise<void>;
   strangers: object | null | unknown[];
   allUsers: () => void;
+  postMessage: (payload, userId) => void;
 }
 
 interface AppContextProviderProps {
@@ -58,6 +62,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [strangers, setStrangers] = useState<object | null>(null);
+    const [conversation, setConversation] = useState([]);
 
     useEffect(() => {
       const checkAuth = async () => {
@@ -158,6 +163,27 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       }
     };
 
+    const postMessage = async (payload, userToSend) => {
+      try {
+        const response = await axiosInstance.post(
+          `/message/send/${userToSend}`,
+          payload
+        );
+        // setConversation(response.data);
+      } catch (error) {
+        console.error(`Error sending message ${error}`);
+      }
+    };
+
+    const getConversation = async (userToSend) => {
+      try {
+        const response = await axiosInstance.get(`/message/${userToSend}`);
+        setConversation(response.data);
+      } catch (error) {
+        console.error(`Error getting the conversation ${error}`);
+      }
+    };
+
     const contextValue: AppContextValue = {
       user,
       isLoading,
@@ -167,6 +193,9 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       logOut,
       strangers,
       allUsers,
+      postMessage,
+      conversation,
+      getConversation,
     };
 
     return (

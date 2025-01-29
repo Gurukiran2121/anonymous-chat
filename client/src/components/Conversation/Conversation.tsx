@@ -8,8 +8,7 @@ import { useAppContext } from "../../appContext/AppContext";
 
 const Conversation: React.FC = () => {
   const [message, setMessage] = useState("");
-  const [conversation, setConversation] = useState([]);
-  const { user } = useAppContext();
+  const { user, postMessage, conversation, getConversation } = useAppContext();
 
   const handleMessage = (event) => {
     const userMessage = event.target.value;
@@ -18,33 +17,8 @@ const Conversation: React.FC = () => {
 
   const { id: userToSend } = useParams();
 
-  const handlePostMessage = async () => {
-    try {
-      const payload = {
-        message: message,
-      };
-      const response = await axiosInstance.post(
-        `/message/send/${userToSend}`,
-        payload
-      );
-
-      setConversation(response.data);
-    } catch (error) {
-      console.error(`Error sending message ${error}`);
-    }
-  };
-
-  const getConversation = async () => {
-    try {
-      const response = await axiosInstance.get(`/message/${userToSend}`);
-      setConversation(response.data);
-    } catch (error) {
-      console.error(`Error getting the conversation ${error}`);
-    }
-  };
-
   useEffect(() => {
-    getConversation();
+    getConversation(userToSend);
   }, []);
 
   return (
@@ -84,7 +58,18 @@ const Conversation: React.FC = () => {
                 placeholder="send message"
                 onChange={handleMessage}
               />
-              <Flex align="center" onClick={handlePostMessage}>
+              <Flex
+                align="center"
+                onClick={() => {
+                  postMessage(
+                    {
+                      message: message,
+                    },
+                    userToSend
+                  );
+                  setMessage("");
+                }}
+              >
                 <SendOutlined style={{ fontSize: "24px", cursor: "pointer" }} />
               </Flex>
             </Flex>
