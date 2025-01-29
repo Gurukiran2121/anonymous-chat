@@ -56,6 +56,8 @@ const Conversation: React.FC = () => {
       >
         <Flex className={style["chats"]} vertical gap={8}>
           {conversation &&
+            Array.isArray(conversation) &&
+            conversation.length > 0 &&
             conversation.map((msg) => (
               <Flex
                 key={msg._id}
