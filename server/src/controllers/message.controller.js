@@ -7,10 +7,7 @@ export const getAllUsers = async (req, res) => {
 
     const allUsers = await UserModel.find({
       _id: { $ne: requestingUserId },
-    }).select("-password");
-
-    console.log(allUsers , "allUsers");
-    
+    }).select("-password");    
 
     return res.status(200).json(allUsers);
   } catch (error) {
@@ -24,7 +21,8 @@ export const getAllMessages = async (req, res) => {
     //requestingUserId is me and idToSendMessageTo is another person i want to message
     const requestingUserId = req.user._id; //user who is requesting the chats
     const { id: idToSendMessageTo } = req.params; //since if logged in user clicks the individual user chat have to load conversation between those users
-
+    
+    
     const conversation = await messageModel.find({
       $or: [
         {
@@ -45,7 +43,7 @@ export const getAllMessages = async (req, res) => {
   }
 };
 
-export const postMessageToUser = async (req, res) => {
+export const postMessageToUser = async (req, res) => {  
   try {
     const postingUserId = req.user._id; //user who is logged in can only send the message to others
     const { id: idToSendMessageTo } = req.params;

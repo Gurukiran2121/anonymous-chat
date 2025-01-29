@@ -1,6 +1,6 @@
 import { Avatar, Flex, Layout, List, Typography } from "antd";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import style from "./SideMenu.module.scss";
 
 interface SideMenuProps {
@@ -17,14 +17,16 @@ const SideMenu: React.FC<SideMenuProps> = ({ strangers }) => {
           itemLayout="horizontal"
           dataSource={strangers}
           renderItem={(item, index) => (
-            <List.Item className={activeChat === item._id ? style["active-chat"] : ""}>
+            <List.Item
+              className={activeChat === item._id ? style["active-chat"] : ""}
+            >
               <List.Item.Meta
                 avatar={
                   <Avatar
                     src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
                   />
                 }
-                title={<a>{item.name}</a>}
+                title={item.name}
                 description={
                   <Typography.Text ellipsis type="secondary">
                     Ant Design, a design languageAnt Design, a design

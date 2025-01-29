@@ -32,6 +32,16 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route
+        path="/"
+        element={
+          userId ? (
+            <Navigate to={`/${userId}`} replace />
+          ) : (
+            <div>Loading...</div>
+          )
+        }
+      />
+      <Route
         path="/:id"
         element={
           isAuthenticated ? (
