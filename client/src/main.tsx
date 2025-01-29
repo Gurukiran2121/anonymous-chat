@@ -17,7 +17,8 @@ const config = {
   components : {
     Layout : {
       headerBg : "#ffffff",
-      footerBg : "#ffffff"
+      footerBg : "#ffffff",
+      lightSiderBg : "#ffffff"
     }
   }
 }

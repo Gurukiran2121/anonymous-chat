@@ -12,7 +12,7 @@ const ChatPage: React.FC = ({ strangers }) => {
         <HeaderChat />
       </Layout.Header>
       <Layout>
-        <Layout.Sider width={300}>
+        <Layout.Sider theme="light" width={300}>
           <SideMenu strangers={strangers} />
         </Layout.Sider>
         <Layout.Content>

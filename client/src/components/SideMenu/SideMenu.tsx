@@ -1,19 +1,23 @@
-import { Avatar, Layout, List, Typography } from "antd";
+import { Avatar, Flex, Layout, List, Typography } from "antd";
 import React from "react";
+import { useParams } from "react-router-dom";
+import style from "./SideMenu.module.scss";
 
 interface SideMenuProps {
   strangers: unknown[];
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ strangers }) => {
+  const { id: activeChat } = useParams();
+
   return (
-    <Layout>
+    <Flex vertical className={style["side-menu-container"]}>
       {strangers ? (
         <List
           itemLayout="horizontal"
           dataSource={strangers}
           renderItem={(item, index) => (
-            <List.Item onClick={() => alert("clicked")}>
+            <List.Item className={activeChat === item._id ? style["active-chat"] : ""}>
               <List.Item.Meta
                 avatar={
                   <Avatar
@@ -33,7 +37,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ strangers }) => {
           )}
         />
       ) : null}
-    </Layout>
+    </Flex>
   );
 };
 
