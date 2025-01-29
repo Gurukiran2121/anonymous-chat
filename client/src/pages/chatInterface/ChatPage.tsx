@@ -4,15 +4,8 @@ import styles from "./ChatPage.module.scss";
 import HeaderChat from "../../components/header/HeaderChat";
 import Conversation from "../../components/Conversation/Conversation";
 import SideMenu from "../../components/SideMenu/SideMenu";
-import { useAppContext } from "../../appContext/AppContext";
 
-const ChatPage: React.FC = () => {
-  const { allUsers, strangers } = useAppContext();
-  
-  useEffect(() => {
-    allUsers();
-  }, []);
-
+const ChatPage: React.FC = ({ strangers }) => {
   return (
     <Layout className={styles["chat-interface-main-container"]}>
       <Layout.Header>
