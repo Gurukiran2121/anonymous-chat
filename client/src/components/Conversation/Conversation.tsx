@@ -53,6 +53,7 @@ const Conversation: React.FC = () => {
                 variant="borderless"
                 placeholder="send message"
                 onChange={handleMessage}
+                value={message}
               />
               <Flex
                 align="center"

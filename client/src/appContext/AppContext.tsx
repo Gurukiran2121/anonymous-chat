@@ -163,7 +163,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
           `/message/send/${userToSend}`,
           payload
         );
-        // setConversation(response.data);
+        setConversation([...conversation ,response.data]);
       } catch (error) {
         console.error(`Error sending message ${error}`);
       }
