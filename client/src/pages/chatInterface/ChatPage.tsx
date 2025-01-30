@@ -4,8 +4,10 @@ import styles from "./ChatPage.module.scss";
 import HeaderChat from "../../components/header/HeaderChat";
 import Conversation from "../../components/Conversation/Conversation";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import { useAppContext } from "../../appContext/AppContext";
 
-const ChatPage: React.FC = ({ strangers }) => {
+const ChatPage: React.FC = () => {
+  const { selectedUserId } = useAppContext();
   return (
     <Layout className={styles["chat-interface-main-container"]}>
       <Layout.Header>
@@ -13,10 +15,13 @@ const ChatPage: React.FC = ({ strangers }) => {
       </Layout.Header>
       <Layout>
         <Layout.Sider theme="light" width={300}>
-          <SideMenu strangers={strangers} />
+          <SideMenu/>
         </Layout.Sider>
         <Layout.Content>
-          <Conversation />
+          {
+            selectedUserId ? <Conversation /> : <div>welcome </div>
+          }
+          
         </Layout.Content>
       </Layout>
       <Layout.Footer>Footer</Layout.Footer>

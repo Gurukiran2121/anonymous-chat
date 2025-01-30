@@ -2,14 +2,23 @@ import { Layout, Spin } from "antd";
 import AppRoutes from "./components/Routes";
 import { useAppContext } from "./appContext/AppContext";
 import { BrowserRouter } from "react-router-dom";
+import { useEffect } from "react";
 
 const { Content } = Layout;
 
 function App() {
-  const { isLoading } = useAppContext();
+  const { isCheckingAuth, checkAuth } = useAppContext();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  if (isCheckingAuth) {
+    return <>loading app...</>;
+  }
   return (
     <BrowserRouter>
-      <Spin spinning={isLoading}>
+      <Spin spinning={isCheckingAuth} delay={300} size="large">
         <Layout className="main-layout-container">
           <Content>
             <AppRoutes />

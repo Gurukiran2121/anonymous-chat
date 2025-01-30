@@ -2,24 +2,20 @@ import { Card, Flex, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import style from "./Conversation.module.scss";
 import { SendOutlined } from "@ant-design/icons";
-import { axiosInstance } from "../../appContext/axiosInstance";
-import { useParams } from "react-router-dom";
 import { useAppContext } from "../../appContext/AppContext";
 
 const Conversation: React.FC = () => {
   const [message, setMessage] = useState("");
-  const { user, postMessage, conversation, getConversation } = useAppContext();
+  const { user, postMessage, conversation, getConversation , selectedUserId } = useAppContext();
 
   const handleMessage = (event) => {
     const userMessage = event.target.value;
     setMessage(userMessage);
   };
 
-  const { id: userToSend } = useParams();
-
   useEffect(() => {
-    getConversation(userToSend);
-  }, []);
+    getConversation(selectedUserId);
+  }, [selectedUserId]);
 
   return (
     <Flex className={style["Conversation-main-container"]}>
@@ -65,7 +61,7 @@ const Conversation: React.FC = () => {
                     {
                       message: message,
                     },
-                    userToSend
+                    selectedUserId
                   );
                   setMessage("");
                 }}

@@ -1,6 +1,7 @@
 import React, {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -37,7 +38,10 @@ interface AppContextValue {
   logOut: () => Promise<void>;
   strangers: object | null | unknown[];
   allUsers: () => void;
+  isLoadingUsers: boolean;
   postMessage: (payload, userId) => void;
+  isCheckingAuth: boolean;
+  checkAuth: () => void;
 }
 
 interface AppContextProviderProps {
@@ -46,16 +50,6 @@ interface AppContextProviderProps {
 
 export const AppContext = createContext<AppContextValue | undefined>(undefined);
 
-const getUserAuthStatus = async (): Promise<User | null> => {
-  try {
-    const response = await axiosInstance.get("/auth/check-auth");
-    return response.data; // Assuming the response contains a user object
-  } catch (error) {
-    console.error("User authentication failed:", error);
-    return null;
-  }
-};
-
 const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
   ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -63,22 +57,23 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [strangers, setStrangers] = useState<object | null>(null);
     const [conversation, setConversation] = useState([]);
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+    const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+    const [selectedUserId , setSelectedUserId] = useState("");
 
-    useEffect(() => {
-      const checkAuth = async () => {
-        setIsLoading(true);
-        const authenticatedUser = await getUserAuthStatus();
-        if (authenticatedUser) {
-          setIsAuthenticated(true);
-          setUser(authenticatedUser);
-        } else {
-          setIsAuthenticated(false);
-        }
-        setIsLoading(false);
-      };
-
-      checkAuth();
-    }, []);
+    const checkAuth = async () => {
+      try {
+        const response = await axiosInstance.get("/auth/check-auth");
+        setUser(response.data);
+        setIsAuthenticated(true);
+        setIsCheckingAuth(false);
+      } catch (error) {
+        setIsCheckingAuth(false);
+        setIsAuthenticated(false);
+        console.error("User authentication failed:", error);
+        return null;
+      }
+    };
 
     const login = async (payload: loginPayload) => {
       try {
@@ -147,21 +142,20 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       }
     };
 
-    const allUsers = async () => {
+    const allUsers = useCallback(async () => {
       try {
-        setIsLoading(true);
         const response = await axiosInstance.get("/message/users");
         const allStrangers = response.data;
         setStrangers(allStrangers);
-        setIsLoading(false);
+        setIsLoadingUsers(false);
       } catch (error) {
-        setIsLoading(false);
+        setIsLoadingUsers(false);
         notification.error({
           description: "Error getting all users.",
         });
         console.error(`error getting all users ${error}`);
       }
-    };
+    }, []);
 
     const postMessage = async (payload, userToSend) => {
       try {
@@ -193,9 +187,14 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       logOut,
       strangers,
       allUsers,
+      isLoadingUsers,
       postMessage,
       conversation,
       getConversation,
+      checkAuth,
+      isCheckingAuth,
+      selectedUserId,
+      setSelectedUserId
     };
 
     return (
