@@ -23,12 +23,15 @@ const Conversation: React.FC = () => {
 
   useEffect(() => {
     getConversation(selectedUserId);
+  }, [selectedUserId]);
+
+  useEffect(() => {
     getRealTimeMessage();
 
     return () => {
       stopRealTimeMessage();
     };
-  }, [selectedUserId, conversation]);
+  }, [conversation]);
 
   const handlePostMessage = () => {
     postMessage(
