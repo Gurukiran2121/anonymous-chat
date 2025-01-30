@@ -19,7 +19,7 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<ChatPage />} />
+      <Route path="/" element={isAuthenticated ? <ChatPage /> : <Navigate to={"/login"} replace/>} />
 
       <Route
         path="/login"
