@@ -6,7 +6,15 @@ import { useAppContext } from "../../appContext/AppContext";
 
 const Conversation: React.FC = () => {
   const [message, setMessage] = useState("");
-  const { user, postMessage, conversation, getConversation , selectedUserId } = useAppContext();
+  const {
+    user,
+    postMessage,
+    conversation,
+    getConversation,
+    selectedUserId,
+    getRealTimeMessage,
+    stopRealTimeMessage,
+  } = useAppContext();
 
   const handleMessage = (event) => {
     const userMessage = event.target.value;
@@ -15,7 +23,22 @@ const Conversation: React.FC = () => {
 
   useEffect(() => {
     getConversation(selectedUserId);
-  }, [selectedUserId]);
+    getRealTimeMessage();
+
+    return () => {
+      stopRealTimeMessage();
+    };
+  }, [selectedUserId, conversation]);
+
+  const handlePostMessage = () => {
+    postMessage(
+      {
+        message: message,
+      },
+      selectedUserId
+    );
+    setMessage("");
+  };
 
   return (
     <Flex className={style["Conversation-main-container"]}>
@@ -54,19 +77,9 @@ const Conversation: React.FC = () => {
                 placeholder="send message"
                 onChange={handleMessage}
                 value={message}
+                onPressEnter={handlePostMessage}
               />
-              <Flex
-                align="center"
-                onClick={() => {
-                  postMessage(
-                    {
-                      message: message,
-                    },
-                    selectedUserId
-                  );
-                  setMessage("");
-                }}
-              >
+              <Flex align="center" onClick={handlePostMessage}>
                 <SendOutlined style={{ fontSize: "24px", cursor: "pointer" }} />
               </Flex>
             </Flex>

@@ -14,17 +14,20 @@ const ChatPage: React.FC = () => {
         <HeaderChat />
       </Layout.Header>
       <Layout>
-        <Layout.Sider theme="light" width={300}>
-          <SideMenu/>
+        <Layout.Sider
+          collapsible
+          breakpoint="lg"
+          theme="light"
+          width={300}
+          className={styles["aside-side-menu-container"]}
+        >
+          <SideMenu />
         </Layout.Sider>
         <Layout.Content>
-          {
-            selectedUserId ? <Conversation /> : <div>welcome </div>
-          }
-          
+          {selectedUserId ? <Conversation /> : <div>welcome </div>}
         </Layout.Content>
       </Layout>
-      <Layout.Footer>Footer</Layout.Footer>
+      {/* <Layout.Footer>Footer</Layout.Footer> */}
     </Layout>
   );
 };

@@ -12,14 +12,19 @@ const config = {
   // 2. Combine dark algorithm and compact algorithm
   // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
   token : {
-
+    colorPrimary : "#eb2f96"
   },
   components : {
     Layout : {
       headerBg : "#ffffff",
-      footerBg : "#ffffff",
-      lightSiderBg : "#ffffff"
+      // footerBg : "#ffffff",
+      // lightSiderBg : "#ffffff"
+    },
+    Menu : {
+      itemHeight : 70,
+      collapsedIconSize : 24
     }
+
   }
 }
 

@@ -3,11 +3,11 @@ import React, {
   ReactNode,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { axiosInstance } from "./axiosInstance";
 import { notification } from "antd";
+import { io } from "socket.io-client";
 
 interface User {
   id: string;
@@ -59,7 +59,39 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [conversation, setConversation] = useState([]);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
-    const [selectedUserId , setSelectedUserId] = useState("");
+    const [selectedUserId, setSelectedUserId] = useState("");
+    const [socketConnection, setSocketConnection] = useState<any>(null);
+    const [onlineUsers, setOnlineUsers] = useState({});
+
+    const connectSocket = (user) => {
+      if (!user || socketConnection?.connected) return;
+      const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
+        query: {
+          userId: user?._id,
+        },
+      });
+      socket.connect();
+      setSocketConnection(socket);
+      socket.on("getOnlineUsers", (data) => {
+        setOnlineUsers(data);
+      });
+    };
+
+    const getRealTimeMessage = () => {
+      socketConnection.on("getSentMessage", (message) => {        
+        setConversation([...conversation, message]);
+      });
+    };
+
+    const stopRealTimeMessage = ()=>{
+      socketConnection.off("getSentMessage");
+    }
+
+    const disconnectSocket = () => {
+      if (socketConnection?.connected) {
+        socketConnection?.disconnect();
+      }
+    };
 
     const checkAuth = async () => {
       try {
@@ -67,6 +99,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         setUser(response.data);
         setIsAuthenticated(true);
         setIsCheckingAuth(false);
+        connectSocket(response.data);
       } catch (error) {
         setIsCheckingAuth(false);
         setIsAuthenticated(false);
@@ -85,6 +118,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
             response.data.message || "You have successfully signed in!",
         });
         setUser(response.data);
+        connectSocket(response.data);
         setIsLoading(false);
         setIsAuthenticated(true);
       } catch (error) {
@@ -132,6 +166,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
           description: response.data.message || "logout successful",
         });
         setIsAuthenticated(false);
+        disconnectSocket();
         setIsLoading(false);
       } catch (error) {
         notification.error({
@@ -163,7 +198,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
           `/message/send/${userToSend}`,
           payload
         );
-        setConversation([...conversation ,response.data]);
+        setConversation([...conversation, response.data]);
       } catch (error) {
         console.error(`Error sending message ${error}`);
       }
@@ -194,7 +229,10 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       checkAuth,
       isCheckingAuth,
       selectedUserId,
-      setSelectedUserId
+      setSelectedUserId,
+      onlineUsers,
+      getRealTimeMessage,
+      stopRealTimeMessage
     };
 
     return (
