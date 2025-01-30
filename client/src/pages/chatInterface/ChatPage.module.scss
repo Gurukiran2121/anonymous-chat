@@ -1,12 +1,16 @@
-.chat-interface-main-container{
-    height: 100%;
-    width: 100%;
+.chat-interface-main-container {
+  height: 100%;
+  width: 100%;
 
-    .aside-side-menu-container{
-        height: 100%;
-        max-height: 100%;
-        min-height: 100%;
-        overflow-y: scroll;
-        overflow-x: hidden;
-    }
+  .header-container {
+    position: relative;
+  }
+
+  .aside-side-menu-container {
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
 }

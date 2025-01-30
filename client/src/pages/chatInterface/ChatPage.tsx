@@ -1,5 +1,5 @@
 import { Layout } from "antd";
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./ChatPage.module.scss";
 import HeaderChat from "../../components/header/HeaderChat";
 import Conversation from "../../components/Conversation/Conversation";
@@ -10,7 +10,7 @@ const ChatPage: React.FC = () => {
   const { selectedUserId } = useAppContext();
   return (
     <Layout className={styles["chat-interface-main-container"]}>
-      <Layout.Header>
+      <Layout.Header className={styles["header-container"]}>
         <HeaderChat />
       </Layout.Header>
       <Layout>
