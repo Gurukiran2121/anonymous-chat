@@ -1,4 +1,4 @@
-import { Avatar, Card, Flex, Input } from "antd";
+import { Avatar, Card, Flex, Input, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import style from "./Conversation.module.scss";
 import { SendOutlined } from "@ant-design/icons";
@@ -56,7 +56,14 @@ const Conversation: React.FC = () => {
   }, [conversation]);
 
   if (isLoadingConversation || !user) {
-    return <>Loading conversation...</>;
+    return (
+      <Spin
+        spinning={true}
+        tip="Loading messages..."
+      >
+        <div style={{ width: "100%", height: "100%" , minHeight : "calc(100dvh - 64px)" }} />
+      </Spin>
+    );
   }
 
   return (
