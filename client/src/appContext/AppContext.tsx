@@ -169,6 +169,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         setIsLoading(true);
         const response = await axiosInstance.post("/auth/logout");
         notification.success({
+          message : "Error",
           description: response.data.message || "logout successful",
         });
         setIsAuthenticated(false);
@@ -176,6 +177,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         setIsLoading(false);
       } catch (error) {
         notification.error({
+          message : "Error",
           description: "Error logging out.",
         });
         setIsAuthenticated(true);
@@ -192,6 +194,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       } catch (error) {
         setIsLoadingUsers(false);
         notification.error({
+          message : "Error",
           description: "Error getting all users.",
         });
         console.error(`error getting all users ${error}`);
