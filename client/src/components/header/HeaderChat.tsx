@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Flex, Skeleton, Typography } from "antd";
+import { Avatar, Dropdown, Flex, Skeleton, Typography, MenuProps } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAppContext } from "../../appContext/AppContext";
@@ -9,7 +9,7 @@ const HeaderChat: React.FC = () => {
   const { logOut, user, strangers, isLoadingUsers } = useAppContext();
   const userId = useParams();
 
-  const items = [
+  const items: MenuProps["items"] = [
     {
       label: (
         <Flex vertical gap={6}>
