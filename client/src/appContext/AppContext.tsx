@@ -209,9 +209,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       try {
         const response = await axiosInstance.get(`/message/${userToSend}`);
         setConversation(response.data);
-        setTimeout(() => {
-          setIsLoadingConversation(false);
-        }, 3000);
+        setIsLoadingConversation(false);
       } catch (error) {
         console.error(`Error getting the conversation ${error}`);
         setIsLoadingConversation(false);
