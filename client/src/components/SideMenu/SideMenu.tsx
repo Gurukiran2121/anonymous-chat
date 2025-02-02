@@ -1,4 +1,4 @@
-import { Avatar, Card, Flex, Menu, Typography } from "antd";
+import { Avatar, Card, Divider, Flex, Menu, Skeleton, Spin, Typography } from "antd";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./SideMenu.module.scss";
@@ -22,7 +22,18 @@ const SideMenu: React.FC = () => {
   // console.log(Object.keys(onlineUsers));
 
   if (isLoadingUsers) {
-    return <div>Loading users...</div>;
+    return (
+        <Flex vertical gap={2}>
+          {Array.from({ length: 6 }).map(() => {
+            return (
+              <Flex gap={8} align="center" style={{padding : "1rem 2rem" , borderBottom : "1px solid #d9d9d9"}}>
+                <Skeleton.Avatar size="large" active />
+                <Skeleton.Input size="small" active />
+              </Flex>
+            );
+          })}
+        </Flex>
+    );
   }
 
   return (

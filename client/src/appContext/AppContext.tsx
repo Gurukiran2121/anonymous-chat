@@ -183,7 +183,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         const response = await axiosInstance.get("/message/users");
         const allStrangers = response.data;
         setStrangers(allStrangers);
-        setIsLoadingUsers(false);
+          setIsLoadingUsers(false);
       } catch (error) {
         setIsLoadingUsers(false);
         notification.error({

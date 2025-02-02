@@ -1,11 +1,13 @@
-import { Avatar, Dropdown, Flex, Typography } from "antd";
+import { Avatar, Dropdown, Flex, Skeleton, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAppContext } from "../../appContext/AppContext";
 import style from "./header.module.scss";
+import { useParams } from "react-router-dom";
 
 const HeaderChat: React.FC = () => {
-  const { logOut, user } = useAppContext();
+  const { logOut, user, strangers, isLoadingUsers } = useAppContext();
+  const userId = useParams();
 
   const items = [
     {
@@ -30,9 +32,32 @@ const HeaderChat: React.FC = () => {
       key: "1",
     },
   ];
+
   return (
-    <Flex align="center" justify="end" className={style["main-chat-header"]}>
+    <Flex
+      align="center"
+      justify="space-between"
+      className={style["main-chat-header"]}
+    >
       <Flex align="center">
+        {isLoadingUsers ? (
+          <Skeleton.Input style={{display : "flex"}}/>
+        ) : (
+          <>
+            {strangers &&
+              strangers.map((user) => {
+                if (user._id === userId.id) {
+                  return (
+                    <>
+                      <Typography.Title level={3}>{user.name}</Typography.Title>
+                    </>
+                  );
+                }
+              })}
+          </>
+        )}
+      </Flex>
+      <Flex justify="center" align="center">
         <Dropdown trigger={["click"]} menu={{ items }}>
           <Avatar size="large" icon={<UserOutlined />} />
         </Dropdown>
