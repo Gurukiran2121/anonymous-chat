@@ -10,7 +10,6 @@ import { notification } from "antd";
 import { io } from "socket.io-client";
 import { AxiosError } from "axios";
 
-
 interface User {
   _id: string;
   name: string;
@@ -38,7 +37,7 @@ interface AppContextValue {
   strangers: unknown[] | null;
   allUsers: () => void;
   isLoadingUsers: boolean;
-  postMessage: (payload : {message : string} , userId : string) => Promise<void>;
+  postMessage: (payload: { message: string }, userId: string) => Promise<void>;
   isCheckingAuth: boolean;
   checkAuth: () => void;
   conversation: unknown[];
@@ -86,7 +85,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     };
 
     const getRealTimeMessage = () => {
-      socketConnection.on("getSentMessage", (message) => {
+      socketConnection.on("getSentMessage", (message: object | unknown[]) => {
         setConversation([...conversation, message]);
       });
     };
@@ -173,7 +172,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         setIsLoading(true);
         const response = await axiosInstance.post("/auth/logout");
         notification.success({
-          message : "Error",
+          message: "Error",
           description: response.data.message || "logout successful",
         });
         setIsAuthenticated(false);
@@ -181,7 +180,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         setIsLoading(false);
       } catch (error) {
         notification.error({
-          message : "Error",
+          message: "Error",
           description: "Error logging out.",
         });
         setIsAuthenticated(true);
@@ -198,14 +197,17 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       } catch (error) {
         setIsLoadingUsers(false);
         notification.error({
-          message : "Error",
+          message: "Error",
           description: "Error getting all users.",
         });
         console.error(`error getting all users ${error}`);
       }
     }, []);
 
-    const postMessage = async (payload: {message : string}, userToSend: string) => {
+    const postMessage = async (
+      payload: { message: string },
+      userToSend: string
+    ) => {
       try {
         const response = await axiosInstance.post(
           `/message/send/${userToSend}`,
