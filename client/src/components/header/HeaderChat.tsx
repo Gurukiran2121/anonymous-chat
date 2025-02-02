@@ -41,19 +41,23 @@ const HeaderChat: React.FC = () => {
     >
       <Flex align="center">
         {isLoadingUsers ? (
-          <Skeleton.Input style={{display : "flex"}}/>
+          <Skeleton.Input style={{ display: "flex" }} />
         ) : (
           <>
             {strangers &&
-              strangers.map((user : {_id : string , name : string}) => {
-                if (user._id === userId.id) {
-                  return (
-                    <>
-                      <Typography.Title level={3}>{user.name}</Typography.Title>
-                    </>
-                  );
+              (strangers as { _id: string; name: string }[]).map(
+                (user: { _id: string; name: string }) => {
+                  if (user._id === userId.id) {
+                    return (
+                      <>
+                        <Typography.Title level={3}>
+                          {user.name}
+                        </Typography.Title>
+                      </>
+                    );
+                  }
                 }
-              })}
+              )}
           </>
         )}
       </Flex>

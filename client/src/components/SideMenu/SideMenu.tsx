@@ -5,7 +5,7 @@ import style from "./SideMenu.module.scss";
 import { useAppContext } from "../../appContext/AppContext";
 
 const SideMenu: React.FC = () => {
-  const { id: activeChat } = useParams<{ id?: string}>();
+  const { id: activeChat } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const {
     allUsers,
@@ -49,7 +49,7 @@ const SideMenu: React.FC = () => {
           className={style["menu-container"]}
         >
           {strangers &&
-            strangers.map<JSX.Element>(
+            (strangers as { _id: string; name: string }[]).map(
               (item: { _id: string; name: string }, index: number) => {
                 const isOnline = onlineUsers[item._id];
 
