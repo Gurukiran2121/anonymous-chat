@@ -1,4 +1,4 @@
-import { Card, Flex, Input } from "antd";
+import { Avatar, Card, Flex, Input } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import style from "./Conversation.module.scss";
 import { SendOutlined } from "@ant-design/icons";
@@ -55,8 +55,8 @@ const Conversation: React.FC = () => {
     }
   }, [conversation]);
 
-  if(isLoadingConversation){
-    return <>Loading conversation...</>
+  if (isLoadingConversation) {
+    return <>Loading conversation...</>;
   }
 
   return (
@@ -72,10 +72,13 @@ const Conversation: React.FC = () => {
             conversation.length > 0 &&
             conversation.map((msg, index) => (
               <Flex
+                align="center"
+                gap={8}
                 key={msg._id}
-                justify={msg.senderID === user?._id ? "end" : "start"}
-                ref={index === conversation.length - 1 ? lastMessageRef : null} // Attach ref to last message
+                justify={msg.senderID === user?._id ? "end" : "start"} // 右对齐发送的消息，左对齐接收的消息
+                ref={index === conversation.length - 1 ? lastMessageRef : null}
               >
+                {msg.senderID !== user?._id && <Avatar />}{" "}
                 <Card
                   size="small"
                   className={
@@ -86,9 +89,11 @@ const Conversation: React.FC = () => {
                 >
                   {msg.message}
                 </Card>
+                {msg.senderID === user?._id && <Avatar />}{" "}
               </Flex>
             ))}
         </Flex>
+
         <Flex className={style["footer"]}>
           <Card className={style["input-box"]} size="small">
             <Flex gap={12}>
@@ -100,7 +105,13 @@ const Conversation: React.FC = () => {
                 onPressEnter={handlePostMessage}
               />
               <Flex align="center" onClick={handlePostMessage}>
-                <SendOutlined style={{ fontSize: "24px", cursor: "pointer" }} />
+                <SendOutlined
+                  style={{
+                    fontSize: "24px",
+                    cursor: "pointer",
+                    color: "#d9d9d9",
+                  }}
+                />
               </Flex>
             </Flex>
           </Card>

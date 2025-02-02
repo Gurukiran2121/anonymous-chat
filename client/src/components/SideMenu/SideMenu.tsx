@@ -7,15 +7,19 @@ import { useAppContext } from "../../appContext/AppContext";
 const SideMenu: React.FC = () => {
   const { id: activeChat } = useParams();
   const navigate = useNavigate();
-  const { allUsers, strangers, isLoadingUsers, setSelectedUserId , onlineUsers } =
-    useAppContext();
+  const {
+    allUsers,
+    strangers,
+    isLoadingUsers,
+    setSelectedUserId,
+    onlineUsers,
+  } = useAppContext();
 
   useEffect(() => {
     allUsers();
   }, []);
 
   // console.log(Object.keys(onlineUsers));
-  
 
   if (isLoadingUsers) {
     return <div>Loading users...</div>;

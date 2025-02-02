@@ -11,9 +11,6 @@ const ChatPage: React.FC = () => {
   const { selectedUserId } = useAppContext();
   return (
     <Layout className={styles["chat-interface-main-container"]}>
-      <Layout.Header className={styles["header-container"]}>
-        <HeaderChat />
-      </Layout.Header>
       <Layout>
         <Layout.Sider
           collapsible
@@ -22,11 +19,18 @@ const ChatPage: React.FC = () => {
           width={300}
           className={styles["aside-side-menu-container"]}
         >
+          <Layout.Header>HEADER</Layout.Header>
           <SideMenu />
         </Layout.Sider>
-        <Layout.Content>
-          {selectedUserId ? <Conversation /> : <LandingPage/>}
-        </Layout.Content>
+
+        <Layout>
+          <Layout.Header className={styles["header-container"]}>
+            <HeaderChat />
+          </Layout.Header>
+          <Layout.Content>
+            {selectedUserId ? <Conversation /> : <LandingPage />}
+          </Layout.Content>
+        </Layout>
       </Layout>
       {/* <Layout.Footer>Footer</Layout.Footer> */}
     </Layout>

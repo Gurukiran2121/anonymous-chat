@@ -25,6 +25,11 @@
             overflow-x: hidden;
             padding: 1rem 2rem;
             display: flex;
+
+            .message-sent{
+                background-color: #6581B9;
+                color: #e9e9e9;
+            }
         }
     }
 

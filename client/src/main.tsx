@@ -24,7 +24,9 @@ const config = {
     },
     Menu : {
       itemHeight : 70,
-      collapsedIconSize : 24
+      collapsedIconSize : 24,
+      itemBorderRadius : 0,
+      itemMarginInline : 0,
     }
 
   }
