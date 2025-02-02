@@ -36,17 +36,21 @@
     .footer{
         width: 100%;
         position: sticky;
-        bottom: 1rem;
-        padding: 1rem 3rem;
+        // bottom: 1rem;
+        // padding: 1rem 3rem;
+
+        .ant-card {
+            border-radius: 0px;
+        }
 
         .ant-card-body{
             padding: 0px;
         }
 
         .input-box{
-            border: 1px solid #e9e9e9;
             width: 100%;
             padding: 4px;
+            border-radius: 0px;
 
             .ant-input {
                 height: 100%;

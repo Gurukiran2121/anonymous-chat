@@ -12,8 +12,8 @@ const config = {
   // 2. Combine dark algorithm and compact algorithm
   // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
   token : {
-    colorPrimary : "#eb2f96",
-    colorLink : "#eb2f96"
+    colorPrimary : "#6581B9",
+    colorLink : "#435b8b"
   },
   components : {
     Layout : {
