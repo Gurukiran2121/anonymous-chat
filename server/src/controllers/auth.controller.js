@@ -29,7 +29,7 @@ export const login = async (req, res) => {
       generateJwtToken(userRequested._id, res);
       return res.status(200).json({
         message: "login successful",
-        id: userRequested._id,
+        _id: userRequested._id,
         email: userRequested.email,
         name: userRequested.name,
       });

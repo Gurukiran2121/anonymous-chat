@@ -55,7 +55,7 @@ const Conversation: React.FC = () => {
     }
   }, [conversation]);
 
-  if (isLoadingConversation) {
+  if (isLoadingConversation || !user) {
     return <>Loading conversation...</>;
   }
 
