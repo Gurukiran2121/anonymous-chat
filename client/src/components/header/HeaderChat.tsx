@@ -45,7 +45,7 @@ const HeaderChat: React.FC = () => {
         ) : (
           <>
             {strangers &&
-              strangers.map((user) => {
+              strangers.map((user : {_id : string , name : string}) => {
                 if (user._id === userId.id) {
                   return (
                     <>

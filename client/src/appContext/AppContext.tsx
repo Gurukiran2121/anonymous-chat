@@ -26,10 +26,6 @@ interface signUpPayload {
   password: string;
 }
 
-interface postMessagePayload {
-  message: string;
-  userId: string;
-}
 interface AppContextValue {
   user: User | null;
   isLoading: boolean;
@@ -40,14 +36,14 @@ interface AppContextValue {
   strangers: unknown[] | null;
   allUsers: () => void;
   isLoadingUsers: boolean;
-  postMessage: (payload: postMessagePayload) => Promise<void>;
+  postMessage: (payload : string , userId : string) => Promise<void>;
   isCheckingAuth: boolean;
   checkAuth: () => void;
   conversation: unknown[];
   getConversation: (userToSend: string) => Promise<void>;
   selectedUserId: string;
   setSelectedUserId: (state: string) => void;
-  onlineUsers: {[key: string]: string };
+  onlineUsers: { [key: string]: string };
   getRealTimeMessage: () => void;
   stopRealTimeMessage: () => void;
   isLoadingConversation: boolean;
@@ -202,7 +198,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       }
     }, []);
 
-    const postMessage = async (payload: postMessagePayload) => {
+    const postMessage = async (payload: string, userToSend: string) => {
       try {
         const response = await axiosInstance.post(
           `/message/send/${userToSend}`,

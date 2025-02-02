@@ -5,7 +5,7 @@ import { SendOutlined } from "@ant-design/icons";
 import { useAppContext } from "../../appContext/AppContext";
 
 const Conversation: React.FC = () => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
   const lastMessageRef = useRef(null);
   const {
     user,
@@ -57,11 +57,14 @@ const Conversation: React.FC = () => {
 
   if (isLoadingConversation || !user) {
     return (
-      <Spin
-        spinning={true}
-        tip="Loading messages..."
-      >
-        <div style={{ width: "100%", height: "100%" , minHeight : "calc(100dvh - 64px)" }} />
+      <Spin spinning={true} tip="Loading messages...">
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            minHeight: "calc(100dvh - 64px)",
+          }}
+        />
       </Spin>
     );
   }
@@ -77,28 +80,35 @@ const Conversation: React.FC = () => {
           {conversation &&
             Array.isArray(conversation) &&
             conversation.length > 0 &&
-            conversation.map((msg, index) => (
-              <Flex
-                align="center"
-                gap={8}
-                key={msg._id}
-                justify={msg.senderID === user?._id ? "end" : "start"} // 右对齐发送的消息，左对齐接收的消息
-                ref={index === conversation.length - 1 ? lastMessageRef : null}
-              >
-                {msg.senderID !== user?._id && <Avatar />}{" "}
-                <Card
-                  size="small"
-                  className={
-                    msg.senderID === user?._id
-                      ? style["message-sent"]
-                      : style["message-received"]
+            conversation.map(
+              (
+                msg: { senderID: string; _id: string; message: string },
+                index
+              ) => (
+                <Flex
+                  align="center"
+                  gap={8}
+                  key={msg._id}
+                  justify={msg.senderID === user?._id ? "end" : "start"} // 右对齐发送的消息，左对齐接收的消息
+                  ref={
+                    index === conversation.length - 1 ? lastMessageRef : null
                   }
                 >
-                  {msg.message}
-                </Card>
-                {msg.senderID === user?._id && <Avatar />}{" "}
-              </Flex>
-            ))}
+                  {msg.senderID !== user?._id && <Avatar />}{" "}
+                  <Card
+                    size="small"
+                    className={
+                      msg.senderID === user?._id
+                        ? style["message-sent"]
+                        : style["message-received"]
+                    }
+                  >
+                    {msg.message}
+                  </Card>
+                  {msg.senderID === user?._id && <Avatar />}{" "}
+                </Flex>
+              )
+            )}
         </Flex>
 
         <Flex className={style["footer"]}>
