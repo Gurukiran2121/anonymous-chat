@@ -8,6 +8,8 @@ import React, {
 import { axiosInstance } from "./axiosInstance";
 import { notification } from "antd";
 import { io } from "socket.io-client";
+import { AxiosError } from "axios";
+
 
 interface User {
   _id: string;
@@ -127,7 +129,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         connectSocket(response.data);
         setIsLoading(false);
         setIsAuthenticated(true);
-      } catch (error) {
+      } catch (err) {
+        const error = err as AxiosError<{ message?: string }>;
         notification.error({
           message: "Login Failed",
           description:
@@ -151,7 +154,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         });
         setIsAuthenticated(false); //since user has to verify the email and again will be pushed to login screen
         setIsLoading(false);
-      } catch (error) {
+      } catch (err) {
+        const error = err as AxiosError<{ message?: string }>;
         notification.error({
           message: "Sign Up Failed",
           description:
