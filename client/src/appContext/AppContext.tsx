@@ -10,7 +10,7 @@ import { notification } from "antd";
 import { io } from "socket.io-client";
 
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
 }
@@ -36,7 +36,7 @@ interface AppContextValue {
   strangers: unknown[] | null;
   allUsers: () => void;
   isLoadingUsers: boolean;
-  postMessage: (payload : string , userId : string) => Promise<void>;
+  postMessage: (payload : {message : string} , userId : string) => Promise<void>;
   isCheckingAuth: boolean;
   checkAuth: () => void;
   conversation: unknown[];
@@ -198,7 +198,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       }
     }, []);
 
-    const postMessage = async (payload: string, userToSend: string) => {
+    const postMessage = async (payload: {message : string}, userToSend: string) => {
       try {
         const response = await axiosInstance.post(
           `/message/send/${userToSend}`,

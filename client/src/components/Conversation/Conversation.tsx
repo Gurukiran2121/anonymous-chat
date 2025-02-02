@@ -80,32 +80,29 @@ const Conversation: React.FC = () => {
           {conversation &&
             Array.isArray(conversation) &&
             conversation.length > 0 &&
-            conversation.map(
-              (
-                msg: { senderID: string; _id: string; message: string },
-                index
-              ) => (
+            (conversation as { message: string; senderID: string }[]).map(
+              ({ message, senderID }, index) => (
                 <Flex
                   align="center"
                   gap={8}
-                  key={msg._id}
-                  justify={msg.senderID === user?._id ? "end" : "start"} // 右对齐发送的消息，左对齐接收的消息
+                  key={senderID}
+                  justify={senderID === user?._id ? "end" : "start"}
                   ref={
                     index === conversation.length - 1 ? lastMessageRef : null
                   }
                 >
-                  {msg.senderID !== user?._id && <Avatar />}{" "}
+                  {senderID !== user?._id && <Avatar />}{" "}
                   <Card
                     size="small"
                     className={
-                      msg.senderID === user?._id
+                      senderID === user?._id
                         ? style["message-sent"]
                         : style["message-received"]
                     }
                   >
-                    {msg.message}
+                    {message}
                   </Card>
-                  {msg.senderID === user?._id && <Avatar />}{" "}
+                  {senderID === user?._id && <Avatar />}{" "}
                 </Flex>
               )
             )}
