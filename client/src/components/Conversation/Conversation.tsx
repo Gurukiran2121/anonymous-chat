@@ -6,7 +6,7 @@ import { useAppContext } from "../../appContext/AppContext";
 
 const Conversation: React.FC = () => {
   const [message, setMessage] = useState<string>("");
-  const lastMessageRef = useRef(null);
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
   const {
     user,
     postMessage,
@@ -18,7 +18,7 @@ const Conversation: React.FC = () => {
     isLoadingConversation,
   } = useAppContext();
 
-  const handleMessage = (event) => {
+  const handleMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const userMessage = event.target.value;
     setMessage(userMessage);
   };
@@ -48,7 +48,7 @@ const Conversation: React.FC = () => {
   useEffect(() => {
     // Smooth scroll to bottom when new messages arrive
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({
+      lastMessageRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "end",
       });
