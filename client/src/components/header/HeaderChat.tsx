@@ -2,6 +2,7 @@ import { Avatar, Dropdown, Flex, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useAppContext } from "../../appContext/AppContext";
+import style from "./header.module.scss";
 
 const HeaderChat: React.FC = () => {
   const { logOut, user } = useAppContext();
@@ -30,8 +31,7 @@ const HeaderChat: React.FC = () => {
     },
   ];
   return (
-    <Flex align="center" justify="space-between">
-      <Flex>left logo section</Flex>
+    <Flex align="center" justify="end" className={style["main-chat-header"]}>
       <Flex align="center">
         <Dropdown trigger={["click"]} menu={{ items }}>
           <Avatar size="large" icon={<UserOutlined />} />
