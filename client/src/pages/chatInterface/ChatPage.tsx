@@ -5,6 +5,7 @@ import HeaderChat from "../../components/header/HeaderChat";
 import Conversation from "../../components/Conversation/Conversation";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useAppContext } from "../../appContext/AppContext";
+import LandingPage from "../../components/LandingContainer/LandingPage";
 
 const ChatPage: React.FC = () => {
   const { selectedUserId } = useAppContext();
@@ -24,7 +25,7 @@ const ChatPage: React.FC = () => {
           <SideMenu />
         </Layout.Sider>
         <Layout.Content>
-          {selectedUserId ? <Conversation /> : <div>welcome </div>}
+          {selectedUserId ? <Conversation /> : <LandingPage/>}
         </Layout.Content>
       </Layout>
       {/* <Layout.Footer>Footer</Layout.Footer> */}

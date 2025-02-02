@@ -15,6 +15,7 @@ const Conversation: React.FC = () => {
     selectedUserId,
     getRealTimeMessage,
     stopRealTimeMessage,
+    isLoadingConversation,
   } = useAppContext();
 
   const handleMessage = (event) => {
@@ -53,6 +54,10 @@ const Conversation: React.FC = () => {
       });
     }
   }, [conversation]);
+
+  if(isLoadingConversation){
+    return <>Loading conversation...</>
+  }
 
   return (
     <Flex className={style["Conversation-main-container"]}>

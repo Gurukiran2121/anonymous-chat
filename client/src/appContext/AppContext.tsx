@@ -62,6 +62,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [selectedUserId, setSelectedUserId] = useState("");
     const [socketConnection, setSocketConnection] = useState<any>(null);
     const [onlineUsers, setOnlineUsers] = useState({});
+    const [isLoadingConversation, setIsLoadingConversation] = useState(true);
 
     const connectSocket = (user) => {
       if (!user || socketConnection?.connected) return;
@@ -78,14 +79,14 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     };
 
     const getRealTimeMessage = () => {
-      socketConnection.on("getSentMessage", (message) => {        
+      socketConnection.on("getSentMessage", (message) => {
         setConversation([...conversation, message]);
       });
     };
 
-    const stopRealTimeMessage = ()=>{
+    const stopRealTimeMessage = () => {
       socketConnection.off("getSentMessage");
-    }
+    };
 
     const disconnectSocket = () => {
       if (socketConnection?.connected) {
@@ -208,8 +209,12 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       try {
         const response = await axiosInstance.get(`/message/${userToSend}`);
         setConversation(response.data);
+        setTimeout(() => {
+          setIsLoadingConversation(false);
+        }, 3000);
       } catch (error) {
         console.error(`Error getting the conversation ${error}`);
+        setIsLoadingConversation(false);
       }
     };
 
@@ -232,7 +237,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       setSelectedUserId,
       onlineUsers,
       getRealTimeMessage,
-      stopRealTimeMessage
+      stopRealTimeMessage,
+      isLoadingConversation,
     };
 
     return (

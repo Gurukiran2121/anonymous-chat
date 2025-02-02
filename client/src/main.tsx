@@ -18,6 +18,7 @@ const config = {
   components : {
     Layout : {
       headerBg : "#ffffff",
+      bodyBg : "#E7EBEE"
       // footerBg : "#ffffff",
       // lightSiderBg : "#ffffff"
     },
