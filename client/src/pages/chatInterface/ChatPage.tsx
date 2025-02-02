@@ -6,7 +6,7 @@ import Conversation from "../../components/Conversation/Conversation";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useAppContext } from "../../appContext/AppContext";
 import LandingPage from "../../components/LandingContainer/LandingPage";
-import Logo from "../../../public/logo.png";
+import BrandLogo from "../../../public/Logo";
 
 const ChatPage: React.FC = () => {
   const { selectedUserId } = useAppContext();
@@ -22,7 +22,7 @@ const ChatPage: React.FC = () => {
         >
           <Layout.Header className={styles["side-menu-header-container"]}>
             <Flex justify="center" align="center" className={styles["logo-container"]}>
-              <img src={Logo} alt="logo" className={styles["logo-image"]}/>
+              <BrandLogo/>
             </Flex>
           </Layout.Header>
           <SideMenu />
