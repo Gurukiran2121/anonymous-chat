@@ -1,4 +1,4 @@
-import { Avatar, Card, Divider, Flex, Menu, Skeleton, Spin, Typography } from "antd";
+import { Avatar, Badge, Card, Divider, Flex, Menu, Skeleton, Spin, Typography } from "antd";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./SideMenu.module.scss";
@@ -23,16 +23,22 @@ const SideMenu: React.FC = () => {
 
   if (isLoadingUsers) {
     return (
-        <Flex vertical gap={2}>
-          {Array.from({ length: 6 }).map(() => {
-            return (
-              <Flex gap={8} align="center" style={{padding : "1rem 2rem" , borderBottom : "1px solid #d9d9d9"}}>
-                <Skeleton.Avatar size="large" active />
-                <Skeleton.Input size="small" active />
-              </Flex>
-            );
-          })}
-        </Flex>
+      <Flex vertical gap={2}>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Flex
+            key={index}
+            gap={8}
+            align="center"
+            style={{
+              padding: "1rem 2rem",
+              borderBottom: "1px solid #d9d9d9",
+            }}
+          >
+            <Skeleton.Avatar size="large" active />
+            <Skeleton.Input size="small" active />
+          </Flex>
+        ))}
+      </Flex>
     );
   }
 
@@ -41,32 +47,48 @@ const SideMenu: React.FC = () => {
       {strangers && (
         <Menu
           mode="inline"
-          selectedKeys={[activeChat]} // 确保选中当前聊天对象
+          selectedKeys={[activeChat]}
           className={style["menu-container"]}
         >
-          {strangers.map((item, index) => (
-            <Menu.Item
-              key={item._id}
-              onClick={() => {
-                setSelectedUserId(item._id);
-                navigate(`/${item._id}`);
-              }}
-              icon={
-                <Avatar
-                  src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-                />
-              }
-            >
-              <Flex vertical>
-                <Typography.Text ellipsis strong>
-                  {item.name}
-                </Typography.Text>
-                <Typography.Text ellipsis type="secondary">
-                  Ant Design, a design language
-                </Typography.Text>
-              </Flex>
-            </Menu.Item>
-          ))}
+          {strangers.map((item, index) => {
+            const isOnline = onlineUsers[item._id]; // Check if user is online
+
+            return (
+              <Menu.Item
+                key={item._id}
+                onClick={() => {
+                  setSelectedUserId(item._id);
+                  navigate(`/${item._id}`);
+                }}
+                icon={
+                  <Badge
+                    dot
+                    status={isOnline ? "success" : "default"} // Green if online, grey if offline
+                    offset={[-5, 35]}
+                  >
+                    <Avatar
+                      src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                    />
+                  </Badge>
+                }
+              >
+                <Flex vertical>
+                  <Typography.Text ellipsis strong>
+                    {item.name}
+                  </Typography.Text>
+                  <Typography.Text ellipsis type="secondary" style={{fontSize : "12px"}} >
+                    Ant Design, a design language
+                  </Typography.Text>
+                  <Typography.Text
+                    type={isOnline ? "success" : "secondary"}
+                    style={{ fontSize: "12px" }}
+                  >
+                    {isOnline ? <Typography.Text style={{fontSize : "12px"}} type="secondary">Online</Typography.Text> : <Typography.Text  style={{fontSize : "12px"}} type="secondary">Offline</Typography.Text>}
+                  </Typography.Text>
+                </Flex>
+              </Menu.Item>
+            );
+          })}
         </Menu>
       )}
     </Flex>
