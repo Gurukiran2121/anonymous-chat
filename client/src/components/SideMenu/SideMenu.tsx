@@ -1,11 +1,11 @@
-import { Avatar, Badge, Card, Divider, Flex, Menu, Skeleton, Spin, Typography } from "antd";
+import { Avatar, Badge, Flex, Menu, Skeleton, Typography } from "antd";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./SideMenu.module.scss";
 import { useAppContext } from "../../appContext/AppContext";
 
 const SideMenu: React.FC = () => {
-  const { id: activeChat } = useParams();
+  const { id: activeChat } = useParams<{ id?: string}>();
   const navigate = useNavigate();
   const {
     allUsers,
@@ -18,8 +18,6 @@ const SideMenu: React.FC = () => {
   useEffect(() => {
     allUsers();
   }, []);
-
-  // console.log(Object.keys(onlineUsers));
 
   if (isLoadingUsers) {
     return (
@@ -47,48 +45,69 @@ const SideMenu: React.FC = () => {
       {strangers && (
         <Menu
           mode="inline"
-          selectedKeys={[activeChat]}
+          selectedKeys={activeChat ? [activeChat] : []}
           className={style["menu-container"]}
         >
-          {strangers.map((item, index) => {
-            const isOnline = onlineUsers[item._id]; // Check if user is online
+          {strangers &&
+            strangers.map<JSX.Element>(
+              (item: { _id: string; name: string }, index: number) => {
+                const isOnline = onlineUsers[item._id];
 
-            return (
-              <Menu.Item
-                key={item._id}
-                onClick={() => {
-                  setSelectedUserId(item._id);
-                  navigate(`/${item._id}`);
-                }}
-                icon={
-                  <Badge
-                    dot
-                    status={isOnline ? "success" : "default"} // Green if online, grey if offline
-                    offset={[-5, 35]}
+                return (
+                  <Menu.Item
+                    key={item._id}
+                    onClick={() => {
+                      setSelectedUserId(item._id);
+                      navigate(`/${item._id}`);
+                    }}
+                    icon={
+                      <Badge
+                        dot
+                        status={isOnline ? "success" : "default"} // Green if online, grey if offline
+                        offset={[-5, 35]}
+                      >
+                        <Avatar
+                          src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                        />
+                      </Badge>
+                    }
                   >
-                    <Avatar
-                      src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-                    />
-                  </Badge>
-                }
-              >
-                <Flex vertical>
-                  <Typography.Text ellipsis strong>
-                    {item.name}
-                  </Typography.Text>
-                  <Typography.Text ellipsis type="secondary" style={{fontSize : "12px"}} >
-                    Ant Design, a design language
-                  </Typography.Text>
-                  <Typography.Text
-                    type={isOnline ? "success" : "secondary"}
-                    style={{ fontSize: "12px" }}
-                  >
-                    {isOnline ? <Typography.Text style={{fontSize : "12px"}} type="secondary">Online</Typography.Text> : <Typography.Text  style={{fontSize : "12px"}} type="secondary">Offline</Typography.Text>}
-                  </Typography.Text>
-                </Flex>
-              </Menu.Item>
-            );
-          })}
+                    <Flex vertical>
+                      <Typography.Text ellipsis strong>
+                        {item.name}
+                      </Typography.Text>
+                      <Typography.Text
+                        ellipsis
+                        type="secondary"
+                        style={{ fontSize: "12px" }}
+                      >
+                        Ant Design, a design language
+                      </Typography.Text>
+                      <Typography.Text
+                        type={isOnline ? "success" : "secondary"}
+                        style={{ fontSize: "12px" }}
+                      >
+                        {isOnline ? (
+                          <Typography.Text
+                            style={{ fontSize: "12px" }}
+                            type="secondary"
+                          >
+                            Online
+                          </Typography.Text>
+                        ) : (
+                          <Typography.Text
+                            style={{ fontSize: "12px" }}
+                            type="secondary"
+                          >
+                            Offline
+                          </Typography.Text>
+                        )}
+                      </Typography.Text>
+                    </Flex>
+                  </Menu.Item>
+                );
+              }
+            )}
         </Menu>
       )}
     </Flex>

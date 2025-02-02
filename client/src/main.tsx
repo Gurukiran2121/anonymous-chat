@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import AppContextProvider from "./appContext/AppContext.tsx";
-import { ConfigProvider, theme as AntTheme } from "antd";
+import { ConfigProvider } from "antd";
 import "./index.scss";
 
 const config = {
@@ -11,33 +11,32 @@ const config = {
 
   // 2. Combine dark algorithm and compact algorithm
   // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
-  token : {
-    colorPrimary : "#6581B9",
-    colorLink : "#435b8b"
+  token: {
+    colorPrimary: "#6581B9",
+    colorLink: "#435b8b",
   },
-  components : {
-    Layout : {
-      headerBg : "#ffffff",
-      bodyBg : "#E7EBEE"
+  components: {
+    Layout: {
+      headerBg: "#ffffff",
+      bodyBg: "#E7EBEE",
       // footerBg : "#ffffff",
       // lightSiderBg : "#ffffff"
     },
-    Menu : {
-      itemHeight : 70,
-      collapsedIconSize : 24,
-      itemBorderRadius : 0,
-      itemMarginInline : 0,
-    }
-
-  }
-}
+    Menu: {
+      itemHeight: 70,
+      collapsedIconSize: 24,
+      itemBorderRadius: 0,
+      itemMarginInline: 0,
+    },
+  },
+};
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
+  <StrictMode>
     <AppContextProvider>
       <ConfigProvider theme={config}>
         <App />
       </ConfigProvider>
     </AppContextProvider>
-  // </StrictMode>
+  </StrictMode>
 );

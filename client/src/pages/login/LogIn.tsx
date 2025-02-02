@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Card, Flex, Form, Input, Layout, notification } from "antd";
+import { Button, Card, Flex, Form, Input, Layout } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import style from "./login.module.scss";
 import { useAppContext } from "../../appContext/AppContext";
 

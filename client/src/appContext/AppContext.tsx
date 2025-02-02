@@ -28,20 +28,29 @@ interface signUpPayload {
 
 interface postMessagePayload {
   message: string;
+  userId: string;
 }
 interface AppContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (payload: loginPayload) => Promise<void>;
-  signup: (payload: signUpPayload) => Promise<void>;
+  signUp: (payload: signUpPayload) => Promise<void>;
   logOut: () => Promise<void>;
-  strangers: object | null | unknown[];
+  strangers: unknown[] | null;
   allUsers: () => void;
   isLoadingUsers: boolean;
-  postMessage: (payload, userId) => void;
+  postMessage: (payload: postMessagePayload) => Promise<void>;
   isCheckingAuth: boolean;
   checkAuth: () => void;
+  conversation: unknown[];
+  getConversation: (userToSend: string) => Promise<void>;
+  selectedUserId: string;
+  setSelectedUserId: (state: string) => void;
+  onlineUsers: {[key: string]: string };
+  getRealTimeMessage: () => void;
+  stopRealTimeMessage: () => void;
+  isLoadingConversation: boolean;
 }
 
 interface AppContextProviderProps {
@@ -55,7 +64,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [strangers, setStrangers] = useState<object | null>(null);
+    const [strangers, setStrangers] = useState<unknown[] | null>(null);
     const [conversation, setConversation] = useState([]);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
@@ -64,7 +73,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [onlineUsers, setOnlineUsers] = useState({});
     const [isLoadingConversation, setIsLoadingConversation] = useState(true);
 
-    const connectSocket = (user) => {
+    const connectSocket = (user: any) => {
       if (!user || socketConnection?.connected) return;
       const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
         query: {
@@ -183,7 +192,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
         const response = await axiosInstance.get("/message/users");
         const allStrangers = response.data;
         setStrangers(allStrangers);
-          setIsLoadingUsers(false);
+        setIsLoadingUsers(false);
       } catch (error) {
         setIsLoadingUsers(false);
         notification.error({
@@ -193,7 +202,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       }
     }, []);
 
-    const postMessage = async (payload, userToSend) => {
+    const postMessage = async (payload: postMessagePayload) => {
       try {
         const response = await axiosInstance.post(
           `/message/send/${userToSend}`,
@@ -205,7 +214,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
       }
     };
 
-    const getConversation = async (userToSend) => {
+    const getConversation = async (userToSend: string) => {
       try {
         const response = await axiosInstance.get(`/message/${userToSend}`);
         setConversation(response.data);
