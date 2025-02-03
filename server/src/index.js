@@ -7,6 +7,7 @@ import timeout from "connect-timeout";
 import { connectDB } from "./db/db.connection.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
 import messageRouter from "./routes/message/user.message.js";
 const app = express();
 dotenv.config();
@@ -25,6 +26,13 @@ const server = http.createServer(app);
 
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "public", "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+});
 
 export const io = new Server(server, {
   cors: {
