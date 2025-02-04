@@ -70,9 +70,11 @@ const AppContextProvider: React.FC<AppContextProviderProps> = React.memo(
     const [onlineUsers, setOnlineUsers] = useState({});
     const [isLoadingConversation, setIsLoadingConversation] = useState(true);
 
+    const url  = import.meta.env.NODE_ENV === "development" ? import.meta.env.VITE_SERVER_BASE_URL : "/"
+
     const connectSocket = (user: any) => {
       if (!user || socketConnection?.connected) return;
-      const socket = io(import.meta.env.VITE_SERVER_BASE_URL, {
+      const socket = io(url, {
         query: {
           userId: user?._id,
         },
